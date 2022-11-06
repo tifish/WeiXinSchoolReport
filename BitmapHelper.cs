@@ -42,9 +42,9 @@ public static class BitmapHelper
 
         var fullBits = fullImage.LockBits(new Rectangle(new Point(0, 0), fullImage.Size),
             ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
         var subBits = subImage.LockBits(new Rectangle(new Point(0, 0), subImage.Size),
             ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
         try
         {
             if (bottomUp)

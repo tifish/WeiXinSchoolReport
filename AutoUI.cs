@@ -217,7 +217,7 @@ public static class AutoUI
     private static PhysicalMonitorBrightnessController? _monitorBrightness;
 
     /// <summary>
-    /// All monitors' brightness, 0-100.
+    ///     All monitors' brightness, 0-100.
     /// </summary>
     public static int MonitorBrightness
     {
