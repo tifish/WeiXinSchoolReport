@@ -1,0 +1,9 @@
+/obj
+/.idea
+/.vs
+/*.user
+/WeiXinSchoolReport/*.exe
+/WeiXinSchoolReport/*.dll
+/WeiXinSchoolReport/*.pdb
+/WeiXinSchoolReport/*.runtimeconfig.json
+/WeiXinSchoolReport/*.deps.json
