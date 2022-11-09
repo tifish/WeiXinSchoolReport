@@ -46,9 +46,13 @@ public class PhysicalMonitorBrightnessController : IDisposable
 
     #region Get & Set
 
-    public void Set(uint brightness)
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="brightness">0-100</param>
+    public void Set(int brightness)
     {
-        Set(brightness, true);
+        Set((uint)brightness, true);
     }
 
     private void Set(uint brightness, bool refreshMonitorsIfNeeded)

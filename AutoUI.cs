@@ -11,7 +11,7 @@ public static class AutoUI
     public static void ClickOnScreen(Point location)
     {
         Cursor.Position = location;
-        Thread.Sleep(1000);
+        Thread.Sleep(500);
         Input.Mouse.LeftButtonClick();
     }
 
@@ -229,7 +229,7 @@ public static class AutoUI
         set
         {
             _monitorBrightness ??= new PhysicalMonitorBrightnessController();
-            _monitorBrightness.Set((uint)value);
+            _monitorBrightness.Set(value);
         }
     }
 }
