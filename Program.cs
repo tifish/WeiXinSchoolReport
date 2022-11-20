@@ -53,15 +53,37 @@ static class Program
     {
         Console.WriteLine(@"点开微信窗口");
         var screenBounds = Screen.PrimaryScreen.Bounds;
-        Point? weChatIconPos = null;
+        var weChatIconPos = GetWeChatIconPos();
 
-        for (var i = 0; i < 10; i++)
+        if (weChatIconPos == null)
         {
-            weChatIconPos = AutoUI.FindBitmapInScreen(
-                BitmapHelper.FromFile("微信图标.png")!, new Rectangle(0, screenBounds.Height - 230, 170, 200), false);
-            if (weChatIconPos != null)
-                break;
-            Thread.Sleep(500);
+            Process.Start(@"C:\Library\Software\Net\Chat\WeChat\WeChat.exe");
+            var loginWnd = IntPtr.Zero;
+            for (var i = 0; i < 10; i++)
+            {
+                loginWnd = AutoUI.FindWindow("WeChatLoginWndForPC", null);
+                if (loginWnd != IntPtr.Zero)
+                    break;
+
+                Thread.Sleep(500);
+            }
+
+            if (loginWnd == IntPtr.Zero)
+            {
+                MessageBox.Show(@"无法启动微信登录窗口");
+                return false;
+            }
+
+            var loginButton = AutoUI.FindBitmapInWindow(BitmapHelper.FromFile("进入微信.png")!, loginWnd, false);
+            if (loginButton == null)
+            {
+                MessageBox.Show(@"找不到“进入微信”按钮");
+                return false;
+            }
+
+            AutoUI.ClickOnWindow(loginWnd, loginButton.Value);
+            Thread.Sleep(5000);
+            weChatIconPos = GetWeChatIconPos();
         }
 
         if (weChatIconPos == null)
@@ -73,6 +95,21 @@ static class Program
         AutoUI.ClickOnScreen(weChatIconPos.Value);
         Thread.Sleep(2000);
         return true;
+
+        Point? GetWeChatIconPos()
+        {
+            // 微信有消息时图标会闪烁，所以多尝试几次
+            for (var i = 0; i < 10; i++)
+            {
+                weChatIconPos = AutoUI.FindBitmapInScreen(
+                    BitmapHelper.FromFile("微信图标.png")!, new Rectangle(0, screenBounds.Height - 230, 170, 200), false);
+                if (weChatIconPos != null)
+                    return weChatIconPos;
+                Thread.Sleep(500);
+            }
+
+            return null;
+        }
     }
 
     private static bool OpenPunchCardView()
