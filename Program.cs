@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
+using System.Reflection;
 
 namespace WeiXinSchoolReport;
 
@@ -10,6 +12,8 @@ static class Program
     [STAThread]
     private static void Main()
     {
+        Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
         var originalBrightness = AutoUI.MonitorBrightness;
         AutoUI.MonitorBrightness = 80;
 
@@ -174,7 +178,7 @@ static class Program
         var viewWnd = AutoUI.FindWindow("CefWebViewWnd", "微信");
         var viewRectangle = AutoUI.GetWindowRectangle(viewWnd);
 
-        Console.WriteLine(@"查找“上报已提交，直接退出”");
+        Console.WriteLine(@"查找“上报已提交”");
         if (AutoUI.FindBitmapInWindow(BitmapHelper.FromFile("上报已提交.png")!, viewWnd, false) != null)
         {
             Console.WriteLine(@"上报已提交，直接退出");
