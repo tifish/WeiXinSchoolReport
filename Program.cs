@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.DirectoryServices.ActiveDirectory;
 using System.Reflection;
 
 namespace WeiXinSchoolReport;
@@ -61,6 +60,8 @@ static class Program
 
         if (weChatIconPos == null)
         {
+            Console.WriteLine(@"没找到微信小图标，尝试启动微信");
+
             Process.Start(@"C:\Library\Software\Net\Chat\WeChat\WeChat.exe");
             var loginWnd = IntPtr.Zero;
             for (var i = 0; i < 10; i++)
@@ -102,11 +103,13 @@ static class Program
 
         Point? GetWeChatIconPos()
         {
+            Taskbar.Show();
+
             // 微信有消息时图标会闪烁，所以多尝试几次
             for (var i = 0; i < 10; i++)
             {
                 weChatIconPos = AutoUI.FindBitmapInScreen(
-                    BitmapHelper.FromFile("微信图标.png")!, new Rectangle(0, screenBounds.Height - 230, 170, 200), false);
+                    BitmapHelper.FromFile("微信图标.png")!, Taskbar.CurrentBounds, false);
                 if (weChatIconPos != null)
                     return weChatIconPos;
                 Thread.Sleep(500);
